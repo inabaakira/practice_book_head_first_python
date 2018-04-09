@@ -2,9 +2,9 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/04/09 13:08:11>
+#    Last Modified: <2018/04/09 13:57:04>
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from vsearch import search4letters
 
 app = Flask(__name__)
@@ -15,7 +15,9 @@ def hello() -> str:
 
 @app.route('/search4', methods=['POST'])
 def do_search() -> str:
-    return str(search4letters('life, the universe, and everything', 'eiru,!'))
+    phrase = request.form['phrase']
+    letters = request.form['letters']
+    return str(search4letters(phrase, letters))
 
 @app.route('/entry')
 def entry_page() -> 'html':
