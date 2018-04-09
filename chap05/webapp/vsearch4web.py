@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/03/27 23:38:45>
+#    Last Modified: <2018/04/09 13:01:21>
 
 from flask import Flask, render_template
 from vsearch import search4letters
@@ -13,7 +13,7 @@ app = Flask(__name__)
 def hello() -> str:
     return 'Hello world from Flask!'
 
-@app.route('/search4')
+@app.route('/search4', methods=['POST'])
 def do_search() -> str:
     return str(search4letters('life, the universe, and everything', 'eiru,!'))
 
