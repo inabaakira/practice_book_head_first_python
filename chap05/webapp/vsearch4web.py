@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/04/09 13:01:21>
+#    Last Modified: <2018/04/09 13:08:11>
 
 from flask import Flask, render_template
 from vsearch import search4letters
@@ -22,4 +22,4 @@ def entry_page() -> 'html':
     return render_template('entry.html',
                            the_title='Welcome to search4letters on the web!')
 
-app.run()
+app.run(debug=True)
