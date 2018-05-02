@@ -2,16 +2,16 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/04/28 20:31:12>
+#    Last Modified: <2018/05/02 11:02:08>
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from vsearch import search4letters
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello() -> str:
-    return 'Hello world from Flask!'
+def hello() -> '302':
+    return redirect('/entry')
 
 @app.route('/search4', methods=['POST'])
 def do_search() -> 'html':
