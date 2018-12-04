@@ -3,3 +3,4 @@ dist
 *.egg-info
 .pytest_cache
 chap06/todos.txt
+webapp/vsearch.log
