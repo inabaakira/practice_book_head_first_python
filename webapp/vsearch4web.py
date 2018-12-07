@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/12/05 01:21:26>
+#    Last Modified: <2018/12/05 21:09:12>
 
 from flask import Flask, render_template, request
 from vsearch import search4letters
@@ -30,6 +30,12 @@ def entry_page() -> 'html':
 def log_request(req: 'flask_request', res: str) -> None:
     with open('vsearch.log', 'a') as log:
         print(req, res, file=log)
+
+@app.route('/viewlog')
+def view_the_log() -> str:
+    with open('vsearch.log') as log:
+        contents = log.read()
+    return contents
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
