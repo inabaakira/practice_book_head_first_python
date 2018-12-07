@@ -2,9 +2,9 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/12/05 21:09:12>
+#    Last Modified: <2018/12/07 21:09:35>
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, escape
 from vsearch import search4letters
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ def log_request(req: 'flask_request', res: str) -> None:
 def view_the_log() -> str:
     with open('vsearch.log') as log:
         contents = log.read()
-    return contents
+    return escape(contents)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
