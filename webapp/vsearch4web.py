@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/12/07 21:09:35>
+#    Last Modified: <2018/12/10 14:14:52>
 
 from flask import Flask, render_template, request, escape
 from vsearch import search4letters
@@ -29,7 +29,7 @@ def entry_page() -> 'html':
                            the_title='Welcome to search4letters on the web!')
 def log_request(req: 'flask_request', res: str) -> None:
     with open('vsearch.log', 'a') as log:
-        print(req, res, file=log)
+        print(str(dir(req)), res, file=log)
 
 @app.route('/viewlog')
 def view_the_log() -> str:
