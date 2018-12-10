@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/12/10 14:14:52>
+#    Last Modified: <2018/12/10 14:38:08>
 
 from flask import Flask, render_template, request, escape
 from vsearch import search4letters
@@ -29,7 +29,10 @@ def entry_page() -> 'html':
                            the_title='Welcome to search4letters on the web!')
 def log_request(req: 'flask_request', res: str) -> None:
     with open('vsearch.log', 'a') as log:
-        print(str(dir(req)), res, file=log)
+        print(req.form, file=log)
+        print(req.remote_addr, file=log)
+        print(req.user_agent, file=log)
+        print(res, file=log)
 
 @app.route('/viewlog')
 def view_the_log() -> str:
