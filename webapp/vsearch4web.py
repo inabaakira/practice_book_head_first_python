@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/12/10 21:30:07>
+#    Last Modified: <2018/12/11 00:25:50>
 
 from flask import Flask, render_template, request, escape
 from vsearch import search4letters
@@ -32,14 +32,18 @@ def log_request(req: 'flask_request', res: str) -> None:
         print(req.form, req.remote_addr, req.user_agent, res, file=log, sep='|')
 
 @app.route('/viewlog')
-def view_the_log() -> str:
+def view_the_log() -> 'html':
     with open('vsearch.log') as log:
         contents = []
         for line in log:
             contents.append([])
             for item in line.split('|'):
                 contents[-1].append(escape(item))
-    return str(contents)
+    titles = ('Form Data', 'Remote_addr', 'User_agent', 'Result')
+    return render_template('viewlog.html',
+                           the_title='View Log',
+                           the_row_titles=titles,
+                           the_data=contents,)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
