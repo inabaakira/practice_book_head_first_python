@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/12/11 00:25:50>
+#    Last Modified: <2018/12/13 20:49:20>
 
 from flask import Flask, render_template, request, escape
 from vsearch import search4letters
@@ -27,9 +27,33 @@ def do_search() -> 'html':
 def entry_page() -> 'html':
     return render_template('entry.html',
                            the_title='Welcome to search4letters on the web!')
+# def log_request(req: 'flask_request', res: str) -> None:
+#     with open('vsearch.log', 'a') as log:
+#         print(req.form, req.remote_addr, req.user_agent, res, file=log, sep='|')
+
 def log_request(req: 'flask_request', res: str) -> None:
-    with open('vsearch.log', 'a') as log:
-        print(req.form, req.remote_addr, req.user_agent, res, file=log, sep='|')
+    """Log details of the web request and the results."""
+    dbconfig = { 'host': '127.0.0.1',
+                 'user': 'vsearch',
+                 'password': 'vsearchpasswd',
+                 'database': 'vsearchlogDB', }
+
+    import mysql.connector
+
+    conn = mysql.connector.connect(**dbconfig)
+    cursor = conn.cursor()
+    _SQL = """insert into log
+              (phrase, letters, ip, browser_string, results)
+              values
+              (%s, %s, %s, %s, %s)"""
+    cursor.execute(_SQL, (req.form['phrase'],
+                          req.form['letters'],
+                          req.remote_addr,
+                          req.user_agent.browser,
+                          res, ))
+    conn.commit()
+    cursor.close()
+    conn.close()
 
 @app.route('/viewlog')
 def view_the_log() -> 'html':
