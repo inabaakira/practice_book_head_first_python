@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2018/12/13 21:33:09>
+#    Last Modified: <2018/12/21 00:57:57>
 
 from flask import Flask, render_template, request, escape
 from vsearch import search4letters
@@ -28,28 +28,26 @@ def entry_page() -> 'html':
     return render_template('entry.html',
                            the_title='Welcome to search4letters on the web!')
 
-import mysql.connector
+from DBcm import UseDatabase
 
 def log_request(req: 'flask_request', res: str) -> None:
     """Log details of the web request and the results."""
+
     dbconfig = { 'host': '127.0.0.1',
                  'user': 'vsearch',
                  'password': 'vsearchpasswd',
                  'database': 'vsearchlogDB', }
-    conn = mysql.connector.connect(**dbconfig)
-    cursor = conn.cursor()
-    _SQL = """insert into log
-              (phrase, letters, ip, browser_string, results)
-              values
-              (%s, %s, %s, %s, %s)"""
-    cursor.execute(_SQL, (req.form['phrase'],
-                          req.form['letters'],
-                          req.remote_addr,
-                          req.user_agent.browser,
-                          res, ))
-    conn.commit()
-    cursor.close()
-    conn.close()
+
+    with UseDatabase(dbconfig) as cursor:
+        _SQL = """insert into log
+                  (phrase, letters, ip, browser_string, results)
+                  values
+                  (%s, %s, %s, %s, %s)"""
+        cursor.execute(_SQL, (req.form['phrase'],
+                              req.form['letters'],
+                              req.remote_addr,
+                              req.user_agent.browser,
+                              res, ))
 
 @app.route('/viewlog')
 def view_the_log() -> 'html':
