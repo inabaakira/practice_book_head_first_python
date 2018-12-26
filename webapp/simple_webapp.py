@@ -2,9 +2,9 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: simple_webapp.py
 #    Created:       <2018/12/26 20:25:41>
-#    Last Modified: <2018/12/26 20:30:26>
+#    Last Modified: <2018/12/26 20:40:17>
 
-from flask import Flask
+from flask import Flask, session
 
 app = Flask(__name__)
 
@@ -23,6 +23,13 @@ def page2() -> str:
 @app.route('/page3')
 def page3() -> str:
     return 'This is page 3.'
+
+@app.route('/login')
+def do_login() -> str:
+    session['logged_in'] = True
+    return 'You are now logged in.'
+
+app.secret_key = 'YouWillNeverGuessMySecretKey'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
