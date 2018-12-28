@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: simple_webapp.py
 #    Created:       <2018/12/26 20:25:41>
-#    Last Modified: <2018/12/26 20:40:17>
+#    Last Modified: <2018/12/28 20:13:44>
 
 from flask import Flask, session
 
@@ -28,6 +28,17 @@ def page3() -> str:
 def do_login() -> str:
     session['logged_in'] = True
     return 'You are now logged in.'
+
+@app.route('/logout')
+def do_logout() -> str:
+    session.pop('logged_in')
+    return 'You are now logged out.'
+
+@app.route('/status')
+def check_status() -> str:
+    if 'logged_in' in session:
+        return 'You are currently logged in.'
+    return 'You are NOT logged in.'
 
 app.secret_key = 'YouWillNeverGuessMySecretKey'
 
