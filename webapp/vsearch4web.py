@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2019/01/03 21:54:17>
+#    Last Modified: <2019/01/12 17:48:33>
 
 from flask import Flask, render_template, request, escape, session
 from vsearch import search4letters
@@ -24,7 +24,10 @@ def do_search() -> 'html':
     letters = request.form['letters']
     title = 'Here are your results:'
     results = str(search4letters(phrase, letters))
-    log_request(request, results)
+    try:
+        log_request(request, results)
+    except Exception as err:
+        print('***** Logging failed with this error:', str(err))
     return render_template('results.html',
                            the_phrase=phrase,
                            the_letters=letters,
