@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2019/01/12 17:48:33>
+#    Last Modified: <2019/01/15 21:17:05>
 
 from flask import Flask, render_template, request, escape, session
 from vsearch import search4letters
@@ -60,16 +60,20 @@ def log_request(req: 'flask_request', res: str) -> None:
 @check_logged_in
 def view_the_log() -> 'html':
     """Display the contents of the log as a HTML table."""
-    with UseDatabase(app.config['dbconfig']) as cursor:
-        _SQL = """select phrase, letters, ip, browser_string, results
-                  from log"""
-        cursor.execute(_SQL)
-        contents = cursor.fetchall()
-    titles = ('Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Result')
-    return render_template('viewlog.html',
-                           the_title='View Log',
-                           the_row_titles=titles,
-                           the_data=contents,)
+    try:
+        with UseDatabase(app.config['dbconfig']) as cursor:
+            _SQL = """select phrase, letters, ip, browser_string, results
+                      from log"""
+            cursor.execute(_SQL)
+            contents = cursor.fetchall()
+        titles = ('Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Result')
+        return render_template('viewlog.html',
+                               the_title='View Log',
+                               the_row_titles=titles,
+                               the_data=contents,)
+    except Exception as err:
+        print('Something went wrong:', str(err))
+    return 'Error'
 
 @app.route('/login')
 def do_login() -> str:
