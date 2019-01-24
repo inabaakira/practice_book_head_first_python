@@ -2,19 +2,19 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: hello_flask.py
 #    Created:       <2018/02/26 20:27:55>
-#    Last Modified: <2019/01/21 21:11:10>
+#    Last Modified: <2019/01/24 21:34:23>
 
 from flask import Flask, render_template, request, escape, session
 from vsearch import search4letters
 
-from DBcm import UseDatabase, ConnectionError, CredentialsError
+from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 
 from checker import check_logged_in
 
 app = Flask(__name__)
 
 app.config['dbconfig'] = { 'host': '127.0.0.1',
-                           'user': 'vsearcherror',
+                           'user': 'vsearch',
                            'password': 'vsearchpasswd',
                            'database': 'vsearchlogDB', }
 
@@ -75,6 +75,8 @@ def view_the_log() -> 'html':
         print('Is your database switched on ? Error:', str(err))
     except CredentialsError as err:
         print('User-id/password issues. Error:', str(err))
+    except SQLError as err:
+        print('Is your query correct? Error:', str(err))
     except Exception as err:
         print('Something went wrong:', str(err))
     return 'Error'
