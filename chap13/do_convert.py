@@ -2,7 +2,7 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: convert.py
 #    Created:       <2019/02/06 21:07:00>
-#    Last Modified: <2019/02/06 21:21:02>
+#    Last Modified: <2019/02/11 21:01:27>
 
 from datetime import datetime
 import pprint
@@ -20,12 +20,7 @@ with open('buzzers.csv') as data:
 pprint.pprint(flights)
 print()
 
-flights2 = {}
+fts = {convert2ampm(k): v.title() for k, v in flights.items()}
 
-# for flight in flights:
-#     flights2[convert2ampm(flight)] = flights[flight].title()
-
-for k, v in flights.items():
-    flights2[convert2ampm(k)] = v.title()
-
-pprint.pprint(flights2)
+dests = set(fts.values())
+pprint.pprint(dests)
