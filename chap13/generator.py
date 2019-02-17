@@ -2,11 +2,11 @@
 #-*- mode: python; coding: utf-8 -*-
 # file: generator.py
 #    Created:       <2019/02/14 21:37:25>
-#    Last Modified: <2019/02/14 21:37:50>
+#    Last Modified: <2019/02/17 15:31:00>
 
-import requests
+from url_utils import gen_from_urls
 
 urls = ('http://headfirstlabs.com', 'http://oreilly.com', 'http://twitter.com')
 
-for resp in (requests.get(url) for url in urls):
-    print(len(resp.content), '->', resp.status_code, '->', resp.url)
+for resp_len, status, url in gen_from_urls(urls):
+    print(resp_len, '->', status, '->', url)
